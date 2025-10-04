@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Phiếu Tham Gia CLB Tin Học LUBU</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .container {
+            width: 500px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h4 {
+            text-align: center;
+            color: #007bff;
+            margin-top: 0;
+        }
+        .form-row {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        .form-label {
+            width: 100px;
+            font-weight: bold;
+        }
+
+        .form-input {
+            width: 150px;
+            margin-right: 10px;
+        }
+
+        .form-message {
+            flex-grow: 1;
+            padding-left: 5px;
+        }
+
+        input[type="text"] {
+            width: 95%;
+            padding: 5px;
+            border: 1px solid #ddd;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+        .general-message {
+            color: #007bff;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .submit-row {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-top: 15px;
+        }
+            .submit-row input[type="submit"] {
+                padding: 5px 15px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 1em;
+                margin-right: 20px;
+            }
+
+        .form-radio-group label {
+            margin-right: 20px;
+        }
+
+        .so-truong-output {
+            color: #000;
+            font-weight: normal;
+        }
+    </style>
+
+    <script>
+        function getValue(id) {
+            var element = document.getElementById(id);
+            return element ? element.value.trim() : '';
+        }
+
+        function showError(key, mess) {
+            var errorElement = document.getElementById(key + '_error');
+            if (errorElement) {
+                errorElement.innerHTML = mess;
+            }
+        }
+
+        function showGeneralMessage(mess, isError = true) {
+            var generalMessageElement = document.getElementById('general_message');
+            if (generalMessageElement) {
+                generalMessageElement.innerHTML = mess;
+                generalMessageElement.style.color = isError ? '#007bff' : 'green';
+            }
+        }
+
+        function updateSoTruong() {
+            var chuyenNganh = getValue('chuyennganh');
+            var soTruongElement = document.getElementById('sotruong_output');
+
+            switch (chuyenNganh) {
+                case 'Hệ thống':
+                    soTruongElement.innerHTML = 'Phân tích và thiết kế';
+                    break;
+                case 'Phần mềm':
+                    soTruongElement.innerHTML = 'Lập trình';
+                    break;
+                case 'Mạng máy tính':
+                    soTruongElement.innerHTML = 'Quản lý mạng';
+                    break;
+                default:
+                    soTruongElement.innerHTML = '';
+            }
+        }
+
+        function validate(event) {
+            event.preventDefault();
+            showError('msv', '');
+            showError('username', '');
+            showError('Tuoi', '');
+            showError('ngoaingu', '');
+            showGeneralMessage('');
+
+            var flag = true;
+            var msv = getValue('msv');
+            if (msv.length !== 10 || !/^[a-zA-Z0-9]+$/.test(msv)) {
+                flag = false;
+                showError('msv', 'Mã sinh viên gồm 10 ký tự');
+            }
+            var username = getValue('username');
+            var nameRegex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝĐàáâãèéêìíòóôõùúýđ\s]+$/;
+
+            if (username === '' || username.length >= 30 || !nameRegex.test(username)) {
+                flag = false;
+                showError('username', 'Họ tên không rỗng và < 30 ký tự');
+            }
+            var TuoiString = getValue('Tuoi');
+            var TuoiValue = parseInt(TuoiString);
+
+            if (TuoiString === '' || isNaN(TuoiValue) || TuoiValue < 18 || !/^\d+$/.test(TuoiString)) {
+                flag = false;
+                showError('Tuoi', 'Tuổi phải 18 trở lên');
+            }
+            var nn_check = document.querySelectorAll('input[name="ngoaingu"]:checked');
+            if (nn_check.length === 0) {
+                flag = false;
+                showError('ngoaingu', 'Anh và Pháp');
+            }
+
+
+            if (flag) {
+                showGeneralMessage("Bạn đã đăng ký thành công", false);
+
+            } else {
+                showGeneralMessage("Bạn phải nhập lại cho đúng", true);
+            }
+        }
+    </script>
+</head>
+<body onload="updateSoTruong()">
+    <div class="main-content">
+        <div class="container">
+            <h4>PHIẾU THAM GIA CLB TIN HỌC LUBU</h4>
+            <form onsubmit="return validate(event)">
+
+                <div class="form-row">
+                    <div class="form-label">Mã sinh viên :</div>
+                    <div class="form-input">
+                        <input type="text" id="msv" name="msv" placeholder="Nhập Mã SV" />
+                    </div>
+                    <div class="form-message">
+                        <span id="msv_error" class="error-message"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label">Họ và tên :</div>
+                    <div class="form-input">
+                        <input type="text" id="username" name="username" placeholder="Nhập Họ và tên" />
+                    </div>
+                    <div class="form-message">
+                        <span id="username_error" class="error-message"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label">Tuổi :</div>
+                    <div class="form-input">
+                        <input type="text" id="Tuoi" name="Tuoi" placeholder="Nhập tuổi > 18" />
+                    </div>
+                    <div class="form-message">
+                        <span id="Tuoi_error" class="error-message"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label">Ngoại ngữ :</div>
+                    <div class="form-input form-radio-group">
+                        <label>
+                            <input type="checkbox" name="ngoaingu" value="Anh" /> Anh
+                        </label>
+                        <label>
+                            <input type="checkbox" name="ngoaingu" value="Pháp" /> Pháp
+                        </label>
+                        <label>
+                            <input type="checkbox" name="ngoaingu" value="Nhật" /> Nhật
+                        </label>
+                    </div>
+                    <div class="form-message">
+                        <span id="ngoaingu_error" class="error-message"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label">Chuyên ngành :</div>
+                    <div class="form-input">
+                        <select id="chuyennganh" name="chuyennganh" onchange="updateSoTruong()">
+                            <option value="Hệ thống">Hệ thống</option>
+                            <option value="Phần mềm">Phần mềm</option>
+                            <option value="Mạng máy tính">Mạng máy tính</option>
+                        </select>
+                    </div>
+                    <div class="form-message"></div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-label">Sở trường :</div>
+                    <div class="form-input">
+                        <span id="sotruong_output"></span>
+                    </div>
+                    <div class="form-message"></div>
+                </div>
+
+                <div class="form-row submit-row">
+                    <input type="submit" id="btn" name="btn" value="Đăng ký" />
+                    <span id="general_message" class="general-message"></span>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</body>
+</html>

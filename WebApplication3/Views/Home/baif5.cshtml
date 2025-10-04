@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bài tập 5: Thanh progress</title>
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            background-color: #fff;
+            margin: 80px;
+            text-align: center;
+        }
+
+        h3 {
+            color: #1e3d7b;
+            margin-bottom: 40px;
+            text-align: left;
+            margin-left: 10%;
+        }
+
+        .progress-container {
+            width: 80%;
+            background-color: #ddd;
+            border-radius: 25px;
+            margin: 25px auto;
+            height: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 25px;
+            text-align: right;
+            line-height: 25px;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 25px;
+            padding-right: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .purple {
+            background-color: #6f00b5;
+        }
+
+        .green {
+            background-color: #006d5b;
+        }
+
+        .orange {
+            background-color: #f27621;
+        }
+
+        button {
+            margin-top: 30px;
+            padding: 10px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+
+    <div class="progress-container">
+        <div id="bar1" class="progress-bar purple">0%</div>
+    </div>
+
+    <div class="progress-container">
+        <div id="bar2" class="progress-bar green">0%</div>
+    </div>
+
+    <div class="progress-container">
+        <div id="bar3" class="progress-bar orange">0%</div>
+    </div>
+
+    <button onclick="startProgress()">Start</button>
+
+    <script>
+        function runProgress(barId, speed) {
+            const bar = document.getElementById(barId);
+            let width = 0;
+            bar.style.width = "0%";
+            bar.textContent = "0%";
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    bar.textContent = "100%";
+                } else {
+                    width++;
+                    bar.style.width = width + "%";
+                    bar.textContent = width + "%";
+                }
+            }, speed);
+        }
+
+        function startProgress() {
+            runProgress("bar1", 25);
+            runProgress("bar2", 40);
+            runProgress("bar3", 60);
+        }
+    </script>
+</body>
+</html>
